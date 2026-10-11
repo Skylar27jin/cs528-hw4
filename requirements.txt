@@ -1,0 +1,6 @@
+fastapi==0.143.0
+uvicorn==0.54.0
+google-cloud-storage==3.16.0
+google-cloud-pubsub==2.42.0
+google-cloud-logging==3.12.1
+psutil==7.0.0
