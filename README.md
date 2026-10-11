@@ -7,10 +7,11 @@ FastAPI file server + Pub/Sub reporter, migrated from HW3. The server reads the 
 - `server.py`: FastAPI application served by Uvicorn; GET path, POST JSON/form `file`, or plain-text filename.
 - `cloud_log.py`: structured Cloud Logging API entries using the attached VM identity.
 - `subscriber.py`: reporting service, using the reporter VM identity.
+- `startup.sh`: readable VM startup template; installs dependencies and configures systemd. `deploy.py` fills its placeholders before upload. Do not run the template directly.
 - `deploy.py`: creates accounts, resource permissions, topic/subscription, server static IP, firewall, and selected VMs. Packages local code into startup metadata; no GitHub repository or service account key is needed.
 - `metrics.py`: whole-VM CPU, memory, RX/TX sampled every second.
-- `stress.py`: runs at most four instructor-client processes, for at most 180 seconds.
-- `plot_metrics.py`: plots measured resource peaks for recorded stress windows.
+- `tools/stress.py`: runs at most four instructor-client processes, for at most 180 seconds.
+- `tools/plot_metrics.py`: plots measured resource peaks for recorded stress windows.
 
 ## Prerequisites
 
@@ -91,7 +92,7 @@ Create a separate Linux client VM and obtain the instructor's Linux-compatible c
 Run four **sequential** rounds on the client VM, using `--clients 1`, then 2, 3, 4, and different output directories:
 
 ```bash
-python3 stress.py --clients 1 --seconds 180 --output results/one -- ./http-client YOUR_CLIENT_ARGUMENTS
+python3 tools/stress.py --clients 1 --seconds 180 --output results/one -- ./http-client YOUR_CLIENT_ARGUMENTS
 ```
 
 Replace `YOUR_CLIENT_ARGUMENTS` with arguments verified by that binary's `--help`; include verbose output to preserve statuses. Each worker repeats the client command if it finishes before the window ends. Do not start multiple stress.py runs at once. Client exit codes alone do not establish server overload: count timeouts, connection failures and unexpected server errors from raw logs, exclude country-denial 400s and deliberate shutdowns at the window boundary. If all four clients succeed, report the observed peaks over three minutes instead of claiming a saturation threshold.
@@ -100,7 +101,7 @@ Copy `/var/log/hw4/metrics.jsonl` from the server and all four `window.json` fil
 
 ```bash
 uv pip install --python .venv/bin/python -r requirements-dev.txt
-.venv/bin/python plot_metrics.py metrics.jsonl results/one/window.json results/two/window.json results/three/window.json results/four/window.json --output performance.png
+.venv/bin/python tools/plot_metrics.py metrics.jsonl results/one/window.json results/two/window.json results/three/window.json results/four/window.json --output performance.png
 ```
 
 Metrics include all VM processes, including logging and the collector. CPU is normalized across visible logical CPUs; memory is total minus available; bandwidth is non-loopback RX + TX in Mbit/s. One-second peaks depend on sample interval. This is not an HTTP-only bandwidth measurement. Check sample coverage and client-VM saturation before drawing conclusions. No performance results or cost figures are fabricated by these tools.
@@ -126,3 +127,9 @@ Local tests use fake Storage/Pub/Sub clients. Live evidence and deployment outpu
 ## Server framework
 
 FastAPI handles HTTP requests; Uvicorn runs the app on port 8080. One process uses up to eight worker threads for synchronous Google SDK operations, so Storage/Pub/Sub/Logging calls do not block the async event loop. POST supports JSON, URL-encoded forms and plain text (64 KiB body limit). Unsupported methods are intercepted before routing and logged as 501/ERROR. Automatic API documentation routes are disabled to preserve bucket-path semantics.
+
+## Verified deployment (2026-10-11)
+
+The server VM `hw4-server` is at http://136.119.167.105:8080/0.html. FastAPI verification passed 27 local tests and 19 live HTTP checks. GET/POST bytes matched the bucket object; 17 error responses had matching Cloud Logging entries (1 WARNING, 7 ERROR, 9 CRITICAL), and all 9 forbidden-country events were found in Pub/Sub. Both systemd units were active and enabled. This records that verification, not a continuous availability check.
+
+Raw results remain in `evidence/fastapi-http-check.json`, `evidence/fastapi-cloud-logs.json`, `evidence/fastapi-pubsub-pull.json`; creation/update output is in `evidence/deploy.txt` and `evidence/fastapi-update.txt`. Evidence is ignored by Git. The reporter VM, client VM, instructor-client run, formal stress tests, cost analysis, browser screenshots and PDF remain separate work.

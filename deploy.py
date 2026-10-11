@@ -20,74 +20,13 @@ def startup(role, project, bucket):
     command = ('/opt/hw4/.venv/bin/uvicorn server:app --host 0.0.0.0 --port 8080 '
                '--workers 1 --timeout-graceful-shutdown 90' if role == 'server'
                else '/opt/hw4/.venv/bin/python /opt/hw4/subscriber.py')
-    return f'''#!/bin/bash
-set -euo pipefail
-export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get install -y python3-venv curl
-id hw4 >/dev/null 2>&1 || useradd --system --home /opt/hw4 --shell /usr/sbin/nologin hw4
-mkdir -p /opt/hw4 /var/log/hw4
-printf '%s' '{payload}' | base64 -d | tar xz -C /opt/hw4
-python3 -m venv /opt/hw4/.venv
-/opt/hw4/.venv/bin/pip install --disable-pip-version-check -r /opt/hw4/requirements.txt
-INSTANCE_ID=$(curl -fsS -H 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/instance/id)
-ZONE=$(curl -fsS -H 'Metadata-Flavor: Google' http://metadata.google.internal/computeMetadata/v1/instance/zone)
-cat > /opt/hw4/service.env <<EOF
-GOOGLE_CLOUD_PROJECT={project}
-BUCKET_NAME={bucket}
-TOPIC_PATH=projects/{project}/topics/hw4-forbidden
-SUBSCRIPTION_PATH=projects/{project}/subscriptions/hw4-forbidden-reporter
-INSTANCE_ID=$INSTANCE_ID
-ZONE=${{ZONE##*/}}
-CLOUD_LOGGING=1
-PYTHONUNBUFFERED=1
-EOF
-cat > /etc/systemd/system/hw4.service <<'EOF'
-[Unit]
-Description=CS528 HW4 {role}
-Wants=network-online.target
-After=network-online.target
-[Service]
-User=hw4
-WorkingDirectory=/opt/hw4
-EnvironmentFile=/opt/hw4/service.env
-ExecStart={command}
-Restart=always
-RestartSec=5
-NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=true
-PrivateTmp=true
-[Install]
-WantedBy=multi-user.target
-EOF
-chown hw4:hw4 /var/log/hw4
-cat > /etc/systemd/system/hw4-metrics.service <<'EOF'
-[Unit]
-Description=HW4 VM resource samples
-[Service]
-User=hw4
-ExecStart=/opt/hw4/.venv/bin/python /opt/hw4/metrics.py
-StandardOutput=append:/var/log/hw4/metrics.jsonl
-Restart=always
-RestartSec=5
-[Install]
-WantedBy=multi-user.target
-EOF
-cat > /etc/logrotate.d/hw4 <<'EOF'
-/var/log/hw4/metrics.jsonl {{
-    daily
-    rotate 3
-    compress
-    missingok
-    copytruncate
-    su hw4 hw4
-}}
-EOF
-systemctl daemon-reload
-systemctl enable hw4
-systemctl restart hw4
-''' + ("systemctl enable hw4-metrics\nsystemctl restart hw4-metrics\n" if role == 'server' else '')
+    template = (ROOT / 'startup.sh').read_text()
+    replacements = {'__PROJECT__': project, '__BUCKET__': bucket,
+                    '__ROLE__': role, '__COMMAND__': command}
+    for token, value in replacements.items():
+        template = template.replace(token, value)
+    return template.replace('__PAYLOAD__', payload)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
