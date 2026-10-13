@@ -1,0 +1,134 @@
+[
+  {
+    "command": "gcloud compute instances delete hw4-server --zone=us-central1-a --project=bu-cs528-cloud-computing --quiet",
+    "output": "Deleted [https://www.googleapis.com/compute/v1/projects/bu-cs528-cloud-computing/zones/us-central1-a/instances/hw4-server].\n",
+    "exit_code": 0,
+    "phase": "cleanup"
+  },
+  {
+    "command": "gcloud storage buckets remove-iam-policy-binding gs://zetian-ps2 --member=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/storage.objectViewer --condition=None --project=bu-cs528-cloud-computing --format='value(etag)' --quiet",
+    "output": "CAY=\n",
+    "exit_code": 0,
+    "phase": "cleanup"
+  },
+  {
+    "command": "gcloud projects remove-iam-policy-binding bu-cs528-cloud-computing --member=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/logging.logWriter --condition=None --format='value(etag)' --quiet",
+    "output": "Updated IAM policy for project [bu-cs528-cloud-computing].\nBwZdmNiVRc0=\n",
+    "exit_code": 0,
+    "phase": "cleanup"
+  },
+  {
+    "command": "gcloud pubsub subscriptions delete hw4-forbidden-reporter --project=bu-cs528-cloud-computing --quiet",
+    "output": "Deleted subscription [projects/bu-cs528-cloud-computing/subscriptions/hw4-forbidden-reporter].\n",
+    "exit_code": 0,
+    "phase": "cleanup"
+  },
+  {
+    "command": "gcloud pubsub topics delete hw4-forbidden --project=bu-cs528-cloud-computing --quiet",
+    "output": "Deleted topic [projects/bu-cs528-cloud-computing/topics/hw4-forbidden].\n",
+    "exit_code": 0,
+    "phase": "cleanup"
+  },
+  {
+    "command": "gcloud compute firewall-rules delete hw4-http --project=bu-cs528-cloud-computing --quiet",
+    "output": "Deleted [https://www.googleapis.com/compute/v1/projects/bu-cs528-cloud-computing/global/firewalls/hw4-http].\n",
+    "exit_code": 0,
+    "phase": "cleanup"
+  },
+  {
+    "command": "gcloud compute addresses delete hw4-server-ip --region=us-central1 --project=bu-cs528-cloud-computing --quiet",
+    "output": "Deleted [https://www.googleapis.com/compute/v1/projects/bu-cs528-cloud-computing/regions/us-central1/addresses/hw4-server-ip].\n",
+    "exit_code": 0,
+    "phase": "cleanup"
+  },
+  {
+    "command": "gcloud iam service-accounts delete hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --project=bu-cs528-cloud-computing --quiet",
+    "output": "deleted service account [hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com]\n",
+    "exit_code": 0,
+    "phase": "cleanup"
+  },
+  {
+    "command": "gcloud services enable compute.googleapis.com iam.googleapis.com pubsub.googleapis.com logging.googleapis.com storage.googleapis.com --project=bu-cs528-cloud-computing",
+    "output": "Operation \"operations/acat.p2-781250194457-7f3aa8b9-d274-43d8-a813-6ba1f3c7023d\" finished successfully.\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "gcloud iam service-accounts create hw4-server --display-name='HW4 Web Server' --project=bu-cs528-cloud-computing",
+    "output": "Created service account [hw4-server].\nService account email: hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "gcloud pubsub topics create hw4-forbidden --project=bu-cs528-cloud-computing",
+    "output": "Created topic [projects/bu-cs528-cloud-computing/topics/hw4-forbidden].\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "gcloud pubsub subscriptions create hw4-forbidden-reporter --topic=hw4-forbidden --project=bu-cs528-cloud-computing",
+    "output": "Created subscription [projects/bu-cs528-cloud-computing/subscriptions/hw4-forbidden-reporter].\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "gcloud storage buckets add-iam-policy-binding gs://zetian-ps2 --member=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/storage.objectViewer --condition=None --project=bu-cs528-cloud-computing --format='value(etag)'",
+    "output": "CAc=\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "gcloud pubsub topics add-iam-policy-binding hw4-forbidden --member=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/pubsub.publisher --project=bu-cs528-cloud-computing",
+    "output": "Updated IAM policy for topic [hw4-forbidden].\nbindings:\n- members:\n  - serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com\n  role: roles/pubsub.publisher\netag: BwZdmNtIyoo=\nversion: 1\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "gcloud projects add-iam-policy-binding bu-cs528-cloud-computing --member=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/logging.logWriter --condition=None --format='value(etag)'",
+    "output": "Updated IAM policy for project [bu-cs528-cloud-computing].\nBwZdmNtl_h4=\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "gcloud compute addresses create hw4-server-ip --region=us-central1 --project=bu-cs528-cloud-computing",
+    "output": "Created [https://www.googleapis.com/compute/v1/projects/bu-cs528-cloud-computing/regions/us-central1/addresses/hw4-server-ip].\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "gcloud compute firewall-rules create hw4-http --network=default --allow=tcp:8080 --source-ranges=0.0.0.0/0 --target-tags=hw4-server --project=bu-cs528-cloud-computing",
+    "output": "Creating firewall...\n..Created [https://www.googleapis.com/compute/v1/projects/bu-cs528-cloud-computing/global/firewalls/hw4-http].\ndone.\nNAME      NETWORK  DIRECTION  PRIORITY  ALLOW     DENY  DISABLED\nhw4-http  default  INGRESS    1000      tcp:8080        False\n",
+    "exit_code": 0,
+    "phase": "provision"
+  },
+  {
+    "command": "COPYFILE_DISABLE=1 tar -czf evidence/manual-deployment/source.tar.gz server.py subscriber.py cloud_log.py metrics.py requirements.txt",
+    "output": "",
+    "exit_code": 0,
+    "phase": "package"
+  },
+  {
+    "command": "base64 < evidence/manual-deployment/source.tar.gz > evidence/manual-deployment/source.b64",
+    "output": "",
+    "exit_code": 0,
+    "phase": "package"
+  },
+  {
+    "command": "bash -n startup.sh",
+    "output": "",
+    "exit_code": 0,
+    "phase": "package"
+  },
+  {
+    "command": "gcloud compute addresses describe hw4-server-ip --region=us-central1 --project=bu-cs528-cloud-computing --format='value(address)'",
+    "output": "136.80.209.59\n",
+    "exit_code": 0,
+    "phase": "package"
+  },
+  {
+    "command": "gcloud compute instances create hw4-server \\\n  --project=bu-cs528-cloud-computing \\\n  --zone=us-central1-a \\\n  --machine-type=f1-micro \\\n  --network=default \\\n  --image-family=debian-12 \\\n  --image-project=debian-cloud \\\n  --boot-disk-size=10GB \\\n  --boot-disk-type=pd-standard \\\n  --service-account=hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com \\\n  --scopes=cloud-platform \\\n  --address=136.80.209.59 \\\n  --tags=hw4-server \\\n  --labels=course=cs528,homework=hw4 \\\n  --metadata=hw4-role=server,hw4-bucket=zetian-ps2 \\\n  --metadata-from-file=startup-script=startup.sh,hw4-source=evidence/manual-deployment/source.b64",
+    "output": "WARNING: You have selected a disk size of under [200GB]. This may result in poor I/O performance. For more information, see: https://developers.google.com/compute/docs/disks#performance.\nCreated [https://www.googleapis.com/compute/v1/projects/bu-cs528-cloud-computing/zones/us-central1-a/instances/hw4-server].\nNAME        ZONE           MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS\nhw4-server  us-central1-a  f1-micro                   10.128.0.7   136.80.209.59  RUNNING\n",
+    "exit_code": 0,
+    "phase": "create"
+  }
+]

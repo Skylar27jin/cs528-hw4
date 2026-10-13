@@ -1,0 +1,10 @@
+HTTP/1.1 501 Not Implemented
+date: Tue, 13 Oct 2026 07:18:23 GMT
+server: uvicorn
+content-type: text/plain; charset=utf-8
+x-request-id: 90ea6b6e-a46c-40c5-8a2a-71d5854515d4
+cache-control: no-store
+x-content-type-options: nosniff
+content-length: 23
+
+Method not implemented

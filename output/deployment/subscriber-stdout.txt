@@ -1,0 +1,5 @@
+enabled
+active
+Oct 11 23:31:58 hw4-reporter systemd[1]: Started hw4.service - CS528 HW4 reporter.
+Oct 11 23:32:01 hw4-reporter python[1757]: Listening on projects/bu-cs528-cloud-computing/subscriptions/hw4-forbidden-reporter
+Oct 11 23:32:02 hw4-reporter python[1757]: {"event_id": "737bd131-7a2d-43cc-a83d-8b5ba26f249f", "timestamp": "2026-10-11T23:31:03.391969+00:00", "method": "GET", "path": "/0.html", "country": "Iran", "file": "0.html", "event": "forbidden_country", "status": 400, "message": "Permission denied: Iran requesting 0.html", "pubsub_message_id": "22361174400332907"}

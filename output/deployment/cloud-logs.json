@@ -1,0 +1,78 @@
+[
+  {
+    "insertId": "1xdzaizf7fhbnq",
+    "jsonPayload": {
+      "country": "",
+      "event": "unsupported_method",
+      "event_id": "eb88a5fa-5aad-4d6a-b563-daa981564d75",
+      "message": "Method not implemented",
+      "method": "HEAD",
+      "path": "/0.html",
+      "status": 501,
+      "timestamp": "2026-10-13T07:18:47.347162+00:00"
+    },
+    "logName": "projects/bu-cs528-cloud-computing/logs/hw4-errors",
+    "receiveTimestamp": "2026-10-13T07:18:47.375546729Z",
+    "resource": {
+      "labels": {
+        "instance_id": "6429242728590189710",
+        "project_id": "bu-cs528-cloud-computing",
+        "zone": "us-central1-a"
+      },
+      "type": "gce_instance"
+    },
+    "severity": "ERROR",
+    "timestamp": "2026-10-13T07:18:47.375546729Z"
+  },
+  {
+    "insertId": "gnnu6qfk2yq14",
+    "jsonPayload": {
+      "country": "",
+      "event": "unsupported_method",
+      "event_id": "90ea6b6e-a46c-40c5-8a2a-71d5854515d4",
+      "message": "Method not implemented",
+      "method": "PUT",
+      "path": "/0.html",
+      "status": 501,
+      "timestamp": "2026-10-13T07:18:23.667013+00:00"
+    },
+    "logName": "projects/bu-cs528-cloud-computing/logs/hw4-errors",
+    "receiveTimestamp": "2026-10-13T07:18:23.684905530Z",
+    "resource": {
+      "labels": {
+        "instance_id": "6429242728590189710",
+        "project_id": "bu-cs528-cloud-computing",
+        "zone": "us-central1-a"
+      },
+      "type": "gce_instance"
+    },
+    "severity": "ERROR",
+    "timestamp": "2026-10-13T07:18:23.684905530Z"
+  },
+  {
+    "insertId": "102lty3fe59ucg",
+    "jsonPayload": {
+      "country": "",
+      "event": "not_found",
+      "event_id": "222efddc-71d4-4f8e-8dd3-f17c3b8acd0f",
+      "file": "no-such-file.html",
+      "message": "File not found",
+      "method": "GET",
+      "path": "/no-such-file.html",
+      "status": 404,
+      "timestamp": "2026-10-13T07:18:23.374210+00:00"
+    },
+    "logName": "projects/bu-cs528-cloud-computing/logs/hw4-errors",
+    "receiveTimestamp": "2026-10-13T07:18:23.489377026Z",
+    "resource": {
+      "labels": {
+        "instance_id": "6429242728590189710",
+        "project_id": "bu-cs528-cloud-computing",
+        "zone": "us-central1-a"
+      },
+      "type": "gce_instance"
+    },
+    "severity": "WARNING",
+    "timestamp": "2026-10-13T07:18:23.489377026Z"
+  }
+]

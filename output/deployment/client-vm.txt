@@ -1,0 +1,83 @@
++ GCLOUD=(gcloud --project="$PROJECT_ID" --quiet)
++ gcloud --project=bu-cs528-cloud-computing --quiet services enable compute.googleapis.com
+++ gcloud --project=bu-cs528-cloud-computing --quiet compute instances list '--format=value(name)'
++ INSTANCES='hw4-reporter
+hw4-server'
++ printf '%s\n' 'hw4-reporter
+hw4-server'
++ grep -Fxq hw4-client
++ gcloud --project=bu-cs528-cloud-computing --quiet compute instances create hw4-client --zone=us-central1-a --machine-type=e2-micro --network=default --image-family=ubuntu-2404-lts-amd64 --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --no-service-account --no-scopes --labels=course=cs528,homework=hw4
+WARNING: You have selected a disk size of under [200GB]. This may result in poor I/O performance. For more information, see: https://developers.google.com/compute/docs/disks#performance.
+Created [https://www.googleapis.com/compute/v1/projects/bu-cs528-cloud-computing/zones/us-central1-a/instances/hw4-client].
+NAME        ZONE           MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+hw4-client  us-central1-a  e2-micro                   10.128.0.10  34.170.234.183  RUNNING
++ READY=0
++ for attempt in 1 2 3 4 5 6
++ gcloud --project=bu-cs528-cloud-computing --quiet compute ssh hw4-client --zone=us-central1-a '--command=mkdir -p ~/hw4-client; uname -m'
+ssh: connect to host 34.170.234.183 port 22: Connection refused
+
+Recommendation: To check for possible causes of SSH connectivity issues and get
+recommendations, rerun the ssh command with the --troubleshoot option.
+
+gcloud compute ssh hw4-client --project=bu-cs528-cloud-computing --zone=us-central1-a --troubleshoot
+
+Or, to investigate an IAP tunneling issue:
+
+gcloud compute ssh hw4-client --project=bu-cs528-cloud-computing --zone=us-central1-a --troubleshoot --tunnel-through-iap
+
+ERROR: (gcloud.compute.ssh) [/usr/bin/ssh] exited with return code [255].
++ sleep 5
++ for attempt in 1 2 3 4 5 6
++ gcloud --project=bu-cs528-cloud-computing --quiet compute ssh hw4-client --zone=us-central1-a '--command=mkdir -p ~/hw4-client; uname -m'
+Warning: Permanently added 'compute.8923314861394469352' (ED25519) to the list of known hosts.
+sky@34.170.234.183: Permission denied (publickey).
+
+Recommendation: To check for possible causes of SSH connectivity issues and get
+recommendations, rerun the ssh command with the --troubleshoot option.
+
+gcloud compute ssh hw4-client --project=bu-cs528-cloud-computing --zone=us-central1-a --troubleshoot
+
+Or, to investigate an IAP tunneling issue:
+
+gcloud compute ssh hw4-client --project=bu-cs528-cloud-computing --zone=us-central1-a --troubleshoot --tunnel-through-iap
+
+ERROR: (gcloud.compute.ssh) [/usr/bin/ssh] exited with return code [255].
++ sleep 5
++ for attempt in 1 2 3 4 5 6
++ gcloud --project=bu-cs528-cloud-computing --quiet compute ssh hw4-client --zone=us-central1-a '--command=mkdir -p ~/hw4-client; uname -m'
+x86_64
++ READY=1
++ break
++ '[' 1 = 1 ']'
++ gcloud --project=bu-cs528-cloud-computing --quiet compute scp $'/Users/sky/Library/CloudStorage/GoogleDrive-skyjin0127@gmail.com/å\205¶ä»\226è®¡ç®\227æ\234º/æ\210\221ç\232\204ç¬\224è®°æ\234¬ç\224µè\204\221/jzt/BUè¯¾ç¨\213/fall_2026/cs528/hw4/http-client-linux' 'hw4-client:~/hw4-client/http-client-linux' --zone=us-central1-a
++ gcloud --project=bu-cs528-cloud-computing --quiet compute ssh hw4-client --zone=us-central1-a '--command=cd ~/hw4-client && chmod u+x http-client-linux && ./http-client-linux --help'
+usage: http-client-linux [-h] [-d DOMAIN] [-b BUCKET] [-w WEBDIR]
+                         [-n NUM_REQUESTS] [-i INDEX] [-p PORT] [-f] [-s] [-v]
+                         [-r RANDOM] [-t TIMEOUT]
+
+options:
+  -h, --help            show this help message and exit
+  -d DOMAIN, --domain DOMAIN
+                        Domain to make requests to
+  -b BUCKET, --bucket BUCKET
+                        Cloud bucket containing your files. Use none if
+                        running local
+  -w WEBDIR, --webdir WEBDIR
+                        Directory containing your files. Use none if you did
+                        not make one
+  -n NUM_REQUESTS, --num_requests NUM_REQUESTS
+                        Number of requests to make
+  -i INDEX, --index INDEX
+                        Maximum existing file index
+  -p PORT, --port PORT  Server Port
+  -f, --follow          Follow Redirects
+  -s, --ssl             Use HTTPS
+  -v, --verbose         Print the responses from the server on stdout
+  -r RANDOM, --random RANDOM
+                        Initial random seed
+  -t TIMEOUT, --timeout TIMEOUT
+                        Timeout in seconds for requests
++ set +x
+
+Connect with:
+gcloud compute ssh hw4-client --zone=us-central1-a --project=bu-cs528-cloud-computing

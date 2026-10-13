@@ -1,0 +1,41 @@
+{
+  "clients": 1,
+  "start": "2026-10-13T06:45:35.889648+00:00",
+  "end": "2026-10-13T06:48:35.902466+00:00",
+  "requested_seconds": 180,
+  "results": [
+    {
+      "client": 1,
+      "status_counts": {
+        "200": 2000,
+        "400": 112
+      },
+      "errors": [],
+      "completed_runs": 0,
+      "window_end_cancellations": 1,
+      "exit_codes": [
+        -15
+      ],
+      "command": [
+        "/home/sky/hw4-client/http-client-linux",
+        "--domain",
+        "136.80.209.59",
+        "--port",
+        "8080",
+        "--bucket",
+        "none",
+        "--webdir",
+        "none",
+        "--num_requests",
+        "100000",
+        "--index",
+        "12000",
+        "--random",
+        "43",
+        "--timeout",
+        "30",
+        "--verbose"
+      ]
+    }
+  ]
+}

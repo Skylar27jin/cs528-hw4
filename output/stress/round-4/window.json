@@ -1,0 +1,140 @@
+{
+  "clients": 4,
+  "start": "2026-10-13T06:55:05.946319+00:00",
+  "end": "2026-10-13T06:58:05.971416+00:00",
+  "requested_seconds": 180,
+  "results": [
+    {
+      "client": 1,
+      "status_counts": {
+        "200": 2826,
+        "400": 149
+      },
+      "errors": [],
+      "completed_runs": 0,
+      "window_end_cancellations": 1,
+      "exit_codes": [
+        -15
+      ],
+      "command": [
+        "/home/sky/hw4-client/http-client-linux",
+        "--domain",
+        "136.80.209.59",
+        "--port",
+        "8080",
+        "--bucket",
+        "none",
+        "--webdir",
+        "none",
+        "--num_requests",
+        "100000",
+        "--index",
+        "12000",
+        "--random",
+        "43",
+        "--timeout",
+        "30",
+        "--verbose"
+      ]
+    },
+    {
+      "client": 2,
+      "status_counts": {
+        "200": 2789,
+        "400": 141
+      },
+      "errors": [],
+      "completed_runs": 0,
+      "window_end_cancellations": 1,
+      "exit_codes": [
+        -15
+      ],
+      "command": [
+        "/home/sky/hw4-client/http-client-linux",
+        "--domain",
+        "136.80.209.59",
+        "--port",
+        "8080",
+        "--bucket",
+        "none",
+        "--webdir",
+        "none",
+        "--num_requests",
+        "100000",
+        "--index",
+        "12000",
+        "--random",
+        "44",
+        "--timeout",
+        "30",
+        "--verbose"
+      ]
+    },
+    {
+      "client": 3,
+      "status_counts": {
+        "200": 2392,
+        "400": 130
+      },
+      "errors": [],
+      "completed_runs": 0,
+      "window_end_cancellations": 1,
+      "exit_codes": [
+        -15
+      ],
+      "command": [
+        "/home/sky/hw4-client/http-client-linux",
+        "--domain",
+        "136.80.209.59",
+        "--port",
+        "8080",
+        "--bucket",
+        "none",
+        "--webdir",
+        "none",
+        "--num_requests",
+        "100000",
+        "--index",
+        "12000",
+        "--random",
+        "45",
+        "--timeout",
+        "30",
+        "--verbose"
+      ]
+    },
+    {
+      "client": 4,
+      "status_counts": {
+        "200": 2245,
+        "400": 95
+      },
+      "errors": [],
+      "completed_runs": 0,
+      "window_end_cancellations": 1,
+      "exit_codes": [
+        -15
+      ],
+      "command": [
+        "/home/sky/hw4-client/http-client-linux",
+        "--domain",
+        "136.80.209.59",
+        "--port",
+        "8080",
+        "--bucket",
+        "none",
+        "--webdir",
+        "none",
+        "--num_requests",
+        "100000",
+        "--index",
+        "12000",
+        "--random",
+        "46",
+        "--timeout",
+        "30",
+        "--verbose"
+      ]
+    }
+  ]
+}

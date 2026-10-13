@@ -6,7 +6,6 @@ from google.api_core.exceptions import NotFound
 import server
 import subscriber
 import cloud_log
-import deploy
 
 @pytest.fixture
 def app(monkeypatch):
@@ -80,13 +79,13 @@ def test_cloud_severity(monkeypatch):
     cloud_log.emit({'status':501}, 'ERROR')
     remote.log_struct.assert_called_once_with({'status':501}, severity='ERROR')
 
-def test_startup_syntax(tmp_path):
+def test_startup_syntax():
     import subprocess
-    for role in ['server','reporter']:
-        script=tmp_path / (role+'.sh')
-        script.write_text(deploy.startup(role, 'test-project', 'test-bucket'))
-        subprocess.run(['bash','-n',str(script)],check=True)
-        assert script.stat().st_size < 256*1024
+    from pathlib import Path
+    script = Path(__file__).resolve().parents[1] / 'startup.sh'
+    subprocess.run(['bash', '-n', str(script)], check=True)
+    assert script.stat().st_size < 256*1024
+
 
 @pytest.mark.parametrize('path', ['/', '/docs', '/nested/file.html'])
 def test_no_automatic_options_response(app, path):

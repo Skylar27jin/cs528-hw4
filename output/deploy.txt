@@ -1,0 +1,109 @@
++ GCLOUD=(gcloud --project="$PROJECT_ID" --quiet)
++ gcloud --project=bu-cs528-cloud-computing --quiet services enable compute.googleapis.com iam.googleapis.com pubsub.googleapis.com logging.googleapis.com storage.googleapis.com
+Operation "operations/acat.p2-781250194457-8c9d03ee-d569-45fb-9b1a-63adb66af4cf" finished successfully.
+++ gcloud --project=bu-cs528-cloud-computing --quiet iam service-accounts list '--format=value(email)'
++ ACCOUNTS='hw3-build@bu-cs528-cloud-computing.iam.gserviceaccount.com
+781250194457-compute@developer.gserviceaccount.com
+hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com
+bu-cs528-cloud-computing@appspot.gserviceaccount.com
+hw4-reporter@bu-cs528-cloud-computing.iam.gserviceaccount.com
+hw3-services@bu-cs528-cloud-computing.iam.gserviceaccount.com'
++ for role in server reporter
++ EMAIL=hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com
++ printf '%s\n' 'hw3-build@bu-cs528-cloud-computing.iam.gserviceaccount.com
+781250194457-compute@developer.gserviceaccount.com
+hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com
+bu-cs528-cloud-computing@appspot.gserviceaccount.com
+hw4-reporter@bu-cs528-cloud-computing.iam.gserviceaccount.com
+hw3-services@bu-cs528-cloud-computing.iam.gserviceaccount.com'
++ grep -Fxq hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com
++ for role in server reporter
++ EMAIL=hw4-reporter@bu-cs528-cloud-computing.iam.gserviceaccount.com
++ printf '%s\n' 'hw3-build@bu-cs528-cloud-computing.iam.gserviceaccount.com
+781250194457-compute@developer.gserviceaccount.com
+hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com
+bu-cs528-cloud-computing@appspot.gserviceaccount.com
+hw4-reporter@bu-cs528-cloud-computing.iam.gserviceaccount.com
+hw3-services@bu-cs528-cloud-computing.iam.gserviceaccount.com'
++ grep -Fxq hw4-reporter@bu-cs528-cloud-computing.iam.gserviceaccount.com
+++ gcloud --project=bu-cs528-cloud-computing --quiet pubsub topics list '--format=value(name)'
++ TOPICS='projects/bu-cs528-cloud-computing/topics/hw3-forbidden
+projects/bu-cs528-cloud-computing/topics/billing-alerts-topic
+projects/bu-cs528-cloud-computing/topics/hw4-forbidden'
++ printf '%s\n' 'projects/bu-cs528-cloud-computing/topics/hw3-forbidden
+projects/bu-cs528-cloud-computing/topics/billing-alerts-topic
+projects/bu-cs528-cloud-computing/topics/hw4-forbidden'
++ grep -Fxq projects/bu-cs528-cloud-computing/topics/hw4-forbidden
+++ gcloud --project=bu-cs528-cloud-computing --quiet pubsub subscriptions list '--format=value(name)'
++ SUBSCRIPTIONS='projects/bu-cs528-cloud-computing/subscriptions/eventarc-us-central1-stop-billing-function-836865-sub-701
+projects/bu-cs528-cloud-computing/subscriptions/hw3-forbidden-local
+projects/bu-cs528-cloud-computing/subscriptions/hw4-forbidden-reporter'
++ printf '%s\n' 'projects/bu-cs528-cloud-computing/subscriptions/eventarc-us-central1-stop-billing-function-836865-sub-701
+projects/bu-cs528-cloud-computing/subscriptions/hw3-forbidden-local
+projects/bu-cs528-cloud-computing/subscriptions/hw4-forbidden-reporter'
++ grep -Fxq projects/bu-cs528-cloud-computing/subscriptions/hw4-forbidden-reporter
++ SERVER_MEMBER=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com
++ gcloud --project=bu-cs528-cloud-computing --quiet storage buckets add-iam-policy-binding gs://zetian-ps2 --member=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/storage.objectViewer --condition=None '--format=value(etag)'
+CAk=
++ gcloud --project=bu-cs528-cloud-computing --quiet pubsub topics add-iam-policy-binding hw4-forbidden --member=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/pubsub.publisher
+Updated IAM policy for topic [hw4-forbidden].
+bindings:
+- members:
+  - serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+etag: BwZdmPZAvxs=
+version: 1
++ gcloud --project=bu-cs528-cloud-computing --quiet projects add-iam-policy-binding bu-cs528-cloud-computing --member=serviceAccount:hw4-server@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/logging.logWriter --condition=None '--format=value(etag)'
+Updated IAM policy for project [bu-cs528-cloud-computing].
+BwZdmPZZ_bc=
++ gcloud --project=bu-cs528-cloud-computing --quiet pubsub subscriptions add-iam-policy-binding hw4-forbidden-reporter --member=serviceAccount:hw4-reporter@bu-cs528-cloud-computing.iam.gserviceaccount.com --role=roles/pubsub.subscriber
+Updated IAM policy for subscription [hw4-forbidden-reporter].
+bindings:
+- members:
+  - serviceAccount:hw4-reporter@bu-cs528-cloud-computing.iam.gserviceaccount.com
+  role: roles/pubsub.subscriber
+etag: BwZdmPZwQn4=
+version: 1
+++ gcloud --project=bu-cs528-cloud-computing --quiet compute addresses list --regions=us-central1 '--format=value(name)'
++ ADDRESSES=hw4-server-ip
++ printf '%s\n' hw4-server-ip
++ grep -Fxq hw4-server-ip
+++ gcloud --project=bu-cs528-cloud-computing --quiet compute addresses describe hw4-server-ip --region=us-central1 '--format=value(address)'
++ STATIC_IP=136.80.209.59
+++ gcloud --project=bu-cs528-cloud-computing --quiet compute firewall-rules list '--format=value(name)'
++ FIREWALLS='default-allow-icmp
+default-allow-internal
+default-allow-rdp
+default-allow-ssh
+hw4-http'
++ printf '%s\n' 'default-allow-icmp
+default-allow-internal
+default-allow-rdp
+default-allow-ssh
+hw4-http'
++ grep -Fxq hw4-http
++ COPYFILE_DISABLE=1
++ tar -czf evidence/script-deployment/source.tar.gz server.py subscriber.py cloud_log.py metrics.py requirements.txt
++ base64
++ bash -n startup.sh
+++ gcloud --project=bu-cs528-cloud-computing --quiet compute instances list '--format=value(name)'
++ INSTANCES=hw4-server
++ for role in server reporter
++ printf '%s\n' hw4-server
++ grep -Fxq hw4-server
++ printf 'VM hw4-%s already exists; no recreation or code update.\n' server
+VM hw4-server already exists; no recreation or code update.
++ continue
++ for role in server reporter
++ printf '%s\n' hw4-server
++ grep -Fxq hw4-reporter
++ EXTRA=(--tags=hw4-reporter)
++ '[' reporter = server ']'
++ gcloud --project=bu-cs528-cloud-computing --quiet compute instances create hw4-reporter --zone=us-central1-a --machine-type=f1-micro --network=default --image-family=debian-12 --image-project=debian-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --service-account=hw4-reporter@bu-cs528-cloud-computing.iam.gserviceaccount.com --scopes=cloud-platform --labels=course=cs528,homework=hw4 --metadata=hw4-role=reporter,hw4-bucket=zetian-ps2 --metadata-from-file=startup-script=startup.sh,hw4-source=evidence/script-deployment/source.b64 --tags=hw4-reporter
+WARNING: You have selected a disk size of under [200GB]. This may result in poor I/O performance. For more information, see: https://developers.google.com/compute/docs/disks#performance.
+Created [https://www.googleapis.com/compute/v1/projects/bu-cs528-cloud-computing/zones/us-central1-a/instances/hw4-reporter].
+NAME          ZONE           MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+hw4-reporter  us-central1-a  f1-micro                   10.128.0.8   34.58.211.242  RUNNING
++ set +x
+Web endpoint: http://136.80.209.59:8080/0.html
+Startup installation may take several minutes.
